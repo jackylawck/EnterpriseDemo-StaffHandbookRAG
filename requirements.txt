@@ -1,0 +1,19 @@
+# ==========================================
+# Enterprise Demo RAG System Dependencies
+# ==========================================
+
+# 1. Web UI Framework
+streamlit==1.32.0
+
+# 2. LLM & RAG Orchestration (LangChain Ecosystem)
+langchain==0.1.13
+langchain-community==0.0.29
+langchain-core==0.1.33
+
+# 3. Vector Database & Hybrid Search Engines
+faiss-cpu==1.8.0
+rank_bm25==0.2.2
+
+# 4. Embeddings & Document Parsing
+sentence-transformers==2.6.1
+pypdf==4.1.0
