@@ -1,0 +1,55 @@
+{
+  "pipeline_name": "EnterpriseDemo-RAG-Governance-Pipeline",
+  "version": "1.0.0",
+  "compliance_alignment": ["ISO/IEC 42001", "ISO/IEC 27001", "EU AI Act (Minimal Risk)"],
+  "stages": [
+    {
+      "step": 1,
+      "stage_id": "dynamic_policy_override_gate",
+      "description": "Intercepts queries matching updated HR circulars to prevent legacy handbook hallucinations.",
+      "config_source": "policy_overrides.json",
+      "action": "Prepend highlighted addendum banner"
+    },
+    {
+      "step": 2,
+      "stage_id": "deterministic_intent_router",
+      "description": "Binds domain-specific queries to authoritative handbook chapters using regex rules.",
+      "hard_bindings": {
+        "training_and_subsidies": "第九章 培訓和發展",
+        "inclement_weather_and_attendance": "第四章 辦公時間及考勤"
+      }
+    },
+    {
+      "step": 3,
+      "stage_id": "ensemble_hybrid_retrieval",
+      "description": "Executes parallel semantic vector search and exact keyword matching.",
+      "engines": [
+        {
+          "type": "Sparse Retrieval",
+          "algorithm": "BM25",
+          "weight": 0.3,
+          "top_k": 4
+        },
+        {
+          "type": "Dense Retrieval",
+          "algorithm": "FAISS (paraphrase-multilingual-MiniLM-L12-v2)",
+          "weight": 0.7,
+          "top_k": 4
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "stage_id": "chapter_verification_and_traceability",
+      "description": "Filters retrieved chunks against target chapters and injects source file and physical page numbers.",
+      "max_displayed_chunks": 2,
+      "audit_metadata_required": ["source_file", "chapter", "page"]
+    },
+    {
+      "step": 5,
+      "stage_id": "ephemeral_session_disposal",
+      "description": "Enforces Zero-Data-Retention by purging temp PDFs immediately and clearing RAM upon session termination.",
+      "retention_policy": "0 seconds post-session"
+    }
+  ]
+}
